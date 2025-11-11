@@ -26,8 +26,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final MsController multyController = MsController();
-  final MsController singleController = MsController();
+  final MsDropController multyController = MsDropController();
+  final MsDropController singleController = MsDropController();
   FocusNode useridFTB = FocusNode();
   List<MsClass> cities = [];
 
@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
             spacing: 10,
             children: [
               cities.isNotEmpty
-                  ? MsSingleMultiSelector(
+                  ? MsDropSingleMultiSelector(
                       dropdownItemPrefixStyle: TextStyle(color: Colors.red),
                       dropdownItemStyle: TextStyle(
                         color: const Color.fromARGB(255, 28, 137, 46),
@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
               //============================================================
               cities.isNotEmpty
-                  ? MsSingleMultiSelector(
+                  ? MsDropSingleMultiSelector(
                       controller: multyController,
                       items: cities,
                       multiSelect: true,
@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       textFieldStyle: TextStyle(fontWeight: FontWeight.bold),
                       textFieldHint: "Search Multiple...",
                       dropdownWidth: 400, // fixed width for dropdown
-                      //controller: msController,
+                      //controller: MsDropController,
                       onChangedMulti: (selected) {
                         print(
                           "Selected items: ${selected.map((c) => c.name).join(', ')}",
