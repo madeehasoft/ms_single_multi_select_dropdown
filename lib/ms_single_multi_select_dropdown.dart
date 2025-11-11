@@ -88,7 +88,8 @@ class MsDropSingleMultiSelector extends StatefulWidget {
   });
 
   @override
-  State<MsDropSingleMultiSelector> createState() => _MsDropSingleMultiSelectorState();
+  State<MsDropSingleMultiSelector> createState() =>
+      _MsDropSingleMultiSelectorState();
 }
 
 class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
@@ -204,8 +205,9 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
       if (widget.multiSelect) {
         itemsHeight += multiSelectButtonsHeight;
         // Ensure buttons row is always visible even when no results
-        if (filtered.isEmpty)
+        if (filtered.isEmpty) {
           itemsHeight = multiSelectButtonsHeight + extraPadding;
+        }
       }
 
       // Final height: not exceeding max available space
@@ -247,28 +249,28 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
                               children: [
                                 ElevatedButton(
                                   onPressed: () {
-  setState(() {
-    selectedMulti.clear();
-    widget.controller?.selectedMulti.clear();
-    widget.onChangedMulti?.call([]);
+                                    setState(() {
+                                      selectedMulti.clear();
+                                      widget.controller?.selectedMulti.clear();
+                                      widget.onChangedMulti?.call([]);
 
-    // ✅ Reset search text
-    _searchCtrl.clear();
+                                      // ✅ Reset search text
+                                      _searchCtrl.clear();
 
-    // ✅ Show all items again
-    filtered = List.from(widget.items);
+                                      // ✅ Show all items again
+                                      filtered = List.from(widget.items);
 
-    // ✅ Highlight first item
-    highlighted = filtered.isNotEmpty ? 0 : -1;
-  });
+                                      // ✅ Highlight first item
+                                      highlighted =
+                                          filtered.isNotEmpty ? 0 : -1;
+                                    });
 
-  // ✅ Rebuild dropdown list
-  _overlayEntry?.markNeedsBuild();
+                                    // ✅ Rebuild dropdown list
+                                    _overlayEntry?.markNeedsBuild();
 
-  // ✅ Optional: keep focus in TextField
-  //_focusNode.requestFocus();
-},
-
+                                    // ✅ Optional: keep focus in TextField
+                                    //_focusNode.requestFocus();
+                                  },
                                   child: Text(
                                     "Clear All",
                                     style: buttonTextStyle,

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ms_single_multi_select_dropdown/ms_single_multi_select_dropdown.dart';
@@ -100,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       dropdownWidth: 400, // fixed width for dropdown
                       multiSelect: false,
                       onSubmittedSingle: (v) {
-                        print("Submitted: ${v?.name}");
+                        log("Submitted: ${v?.name}");
                         //multyController.requestFocus();
                       },
                     )
@@ -121,9 +122,13 @@ class _MyHomePageState extends State<MyHomePage> {
                       dropdownWidth: 400, // fixed width for dropdown
                       //controller: MsDropController,
                       onChangedMulti: (selected) {
-                        print(
-                          "Selected items: ${selected.map((c) => c.name).join(', ')}",
-                        );
+                        if (selected.isNotEmpty) {
+                          log(
+                            "Selected items: ${selected.map((c) => c.name).join(', ')}",
+                          );
+                        } else {
+                          log("Selected items: none");
+                        }
                       },
 
                       onSubmittedMulti: (v) {
