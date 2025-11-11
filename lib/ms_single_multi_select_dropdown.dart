@@ -360,8 +360,8 @@ class _MsSingleMultiSelectorState extends State<MsSingleMultiSelector> {
   }
 
   /// ------------------ Keyboard Support ------------------
-  KeyEventResult handleRawKey(RawKeyEvent event) {
-    if (event is! RawKeyDownEvent) return KeyEventResult.ignored;
+  KeyEventResult handleRawKey(KeyEvent event) {
+    if (event is! KeyDownEvent) return KeyEventResult.ignored;
     if (filtered.isEmpty) return KeyEventResult.ignored;
 
     final data = event.logicalKey;
@@ -595,9 +595,9 @@ class _MsSingleMultiSelectorState extends State<MsSingleMultiSelector> {
   /// ------------------ Widget Build ------------------
   @override
   Widget build(BuildContext context) {
-    return RawKeyboardListener(
+    return KeyboardListener(
       focusNode: _keyboardNode,
-      onKey: handleRawKey,
+      onKeyEvent: handleRawKey,
       child: CompositedTransformTarget(
         link: _layerLink,
         child: SizedBox(

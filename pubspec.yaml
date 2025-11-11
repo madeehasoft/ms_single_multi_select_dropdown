@@ -18,14 +18,9 @@ dev_dependencies:
   flutter_lints: ^5.0.0
 
 platforms:
-  android: 
-    minSdkVersion: 21
-  ios: 
-    minSdkVersion: 9.0
+  android:
+  ios:
   web:
-    renderer: html  
-  macos:
-    minSdkVersion: 10.11
 
 linter:
   rules:
