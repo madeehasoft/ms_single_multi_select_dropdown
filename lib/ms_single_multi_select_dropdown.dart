@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 /// ------------------ CONTROLLER ------------------
-class MsController {
+class MsDropController {
   final FocusNode focusNode = FocusNode();
 
   MsClass? selectedSingle;
@@ -39,7 +39,7 @@ class MsClass {
 }
 
 /// ------------------ MAIN WIDGET ------------------
-class MsSingleMultiSelector extends StatefulWidget {
+class MsDropSingleMultiSelector extends StatefulWidget {
   final List<MsClass> items;
   final bool multiSelect;
 
@@ -53,7 +53,7 @@ class MsSingleMultiSelector extends StatefulWidget {
   final void Function(MsClass?)? onSubmittedSingle;
   final void Function(List<MsClass>)? onSubmittedMulti;
 
-  final MsController? controller;
+  final MsDropController? controller;
 
   final dynamic dropdownWidth;
   final dynamic dropdownMenuWidth;
@@ -67,7 +67,7 @@ class MsSingleMultiSelector extends StatefulWidget {
   final ButtonStyle? buttonStyle;
   final String? textFieldHint;
 
-  const MsSingleMultiSelector({
+  const MsDropSingleMultiSelector({
     super.key,
     required this.items,
     this.multiSelect = false,
@@ -88,10 +88,10 @@ class MsSingleMultiSelector extends StatefulWidget {
   });
 
   @override
-  State<MsSingleMultiSelector> createState() => _MsSingleMultiSelectorState();
+  State<MsDropSingleMultiSelector> createState() => _MsDropSingleMultiSelectorState();
 }
 
-class _MsSingleMultiSelectorState extends State<MsSingleMultiSelector> {
+class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
   String get textFieldHint => widget.textFieldHint ?? "Search...";
 
   TextStyle get textFieldStyle =>
@@ -247,15 +247,28 @@ class _MsSingleMultiSelectorState extends State<MsSingleMultiSelector> {
                               children: [
                                 ElevatedButton(
                                   onPressed: () {
-                                    setState(() {
-                                      selectedMulti.clear();
-                                      _searchCtrl.clear();
-                                      widget.controller?.selectedMulti.clear();
-                                      widget.onChangedMulti?.call([]);
-                                    });
-                                    _overlayEntry?.markNeedsBuild();
-                                    //_focusNode.requestFocus();
-                                  },
+  setState(() {
+    selectedMulti.clear();
+    widget.controller?.selectedMulti.clear();
+    widget.onChangedMulti?.call([]);
+
+    // ✅ Reset search text
+    _searchCtrl.clear();
+
+    // ✅ Show all items again
+    filtered = List.from(widget.items);
+
+    // ✅ Highlight first item
+    highlighted = filtered.isNotEmpty ? 0 : -1;
+  });
+
+  // ✅ Rebuild dropdown list
+  _overlayEntry?.markNeedsBuild();
+
+  // ✅ Optional: keep focus in TextField
+  //_focusNode.requestFocus();
+},
+
                                   child: Text(
                                     "Clear All",
                                     style: buttonTextStyle,
