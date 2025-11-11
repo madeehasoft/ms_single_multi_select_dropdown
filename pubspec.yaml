@@ -26,15 +26,12 @@ linter:
   rules:
     - public_member_api_docs
     
-topics: 
-  - multi-select
-  - single-select
+topics:
   - dropdown
-  - selector
-  - list-item-finder
-  - clear-all
-  - done-button
-  - sellected-item-view
+  - multi-select
+  - keyboard-navigation
+  - accessibility
+  - overlay
   
 license: MIT
 
