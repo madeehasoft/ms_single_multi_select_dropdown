@@ -1,0 +1,29 @@
+[
+  {
+    "prefixCode": "Prefix Code 001",
+    "name": "Dhaka",
+    "suffixCode": "Suffix Code 001"
+  },
+  {
+    "prefixCode": "Prefix Code 002",
+    "name": "Khulna",
+    "suffixCode": "Suffix Code 002"
+  },
+  {
+    "prefixCode": "Prefix Code 003",
+    "name": "Bangladesh",
+    "suffixCode": "Suffix Code 003"
+  },
+  {
+    "prefixCode": "Prefix Code 004",
+    "name": "China",
+    "suffixCode": "Suffix Code 004"
+  }
+  ,
+  {
+    "prefixCode": "Prefix Code 005",
+    "name": "Japan",
+    "suffixCode": "Suffix Code 005"
+  }
+  
+]
