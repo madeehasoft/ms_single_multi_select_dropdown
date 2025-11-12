@@ -2,27 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 /// ------------------ CONTROLLER ------------------
+/// Controller for managing focus and selection state of [MsDropSingleMultiSelector].
+///
+/// Provides access to selected items, focus control, and input text.
 class MsDropController {
+  /// Focus node used to manage keyboard focus for the dropdown.
   final FocusNode focusNode = FocusNode();
 
+  /// Currently selected item in single-select mode.
   MsClass? selectedSingle;
+
+  /// Currently selected items in multi-select mode.
   List<MsClass> selectedMulti = [];
 
-  String text = ""; // ✅ ADD THIS
+  /// Text input from the search field.
+  String text = "";
 
+  /// Requests focus for the dropdown input field.
   void requestFocus() => focusNode.requestFocus();
+
+  /// Removes focus from the dropdown input field.
   void unfocus() => focusNode.unfocus();
+
+  /// Disposes the focus node.
   void dispose() => focusNode.dispose();
 
+  /// Returns true if any item is selected.
   bool get isSelected => selectedSingle != null || selectedMulti.isNotEmpty;
 }
 
 /// ------------------ MODEL ------------------
+/// Represents a selectable item in the dropdown.
+///
+/// Includes optional prefix and suffix codes for categorization or metadata.
 class MsClass {
+  /// Prefix code used for grouping or filtering.
   final String prefixCode;
+
+  /// Display name of the item.
   final String name;
+
+  /// Suffix code used for additional metadata.
   final String suffixCode;
 
+  /// Creates a new [MsClass] with the given prefix, name, and suffix.
   const MsClass({
     required this.prefixCode,
     required this.name,
@@ -41,40 +64,77 @@ class MsClass {
 }
 
 /// ------------------ MAIN WIDGET ------------------
+/// A customizable dropdown widget supporting single and multi-select modes.
+///
+/// Includes keyboard navigation, search, and styling options.
 class MsDropSingleMultiSelector extends StatefulWidget {
+  /// List of items to display in the dropdown.
   final List<MsClass> items;
+
+  /// Enables multi-select mode if true.
   final bool multiSelect;
 
-  /// Called when single item changes
+  /// Callback when a single item is selected.
   final void Function(MsClass?)? onChangedSingle;
 
-  /// Called when multi-select items change
+  /// Callback when multiple items are selected.
   final void Function(List<MsClass>)? onChangedMulti;
 
-  /// Called on Enter / submit to propagate to form
+  /// Callback when Enter is pressed in single-select mode.
   final void Function(MsClass?)? onSubmittedSingle;
+
+  /// Callback when Enter is pressed in multi-select mode.
   final void Function(List<MsClass>)? onSubmittedMulti;
 
+  /// Optional controller to manage focus and selection externally.
   final MsDropController? controller;
 
+  /// Width of the dropdown trigger widget.
   final dynamic dropdownWidth;
+
+  /// Width of the dropdown menu.
   final dynamic dropdownMenuWidth;
 
-  // Customization
+  /// Style for the text field input.
   final TextStyle? textFieldStyle;
+
+  /// Style for dropdown items.
   final TextStyle? dropdownItemStyle;
+
+  /// Style for prefix text in dropdown items.
   final TextStyle? dropdownItemPrefixStyle;
+
+  /// Style for suffix text in dropdown items.
   final TextStyle? dropdownItemSuffixStyle;
+
+  /// Style for the trigger button text.
   final TextStyle? buttonTextStyle;
+
+  /// Style for the trigger button.
   final ButtonStyle? buttonStyle;
+
+  /// Hint text for the input field.
   final String? textFieldHint;
+
+  /// Icon shown for search functionality.
   final Icon? searchIcon;
+
+  /// Icon shown for opening the dropdown menu.
   final Icon? menuIcon;
+
+  /// Icon shown for clearing the selection.
   final Icon? clearIcon;
-  final Color?
-      textFieldBackgroundColor; // add this inside MsDropSingleMultiSelector
-  final Color? dropdownItemHighlightColor; // highlighted item background
-  final Color? dropdownBackgroundColor; // NEW
+
+  /// Background color of the text field.
+  final Color? textFieldBackgroundColor;
+
+  /// Background color for highlighted dropdown items.
+  final Color? dropdownItemHighlightColor;
+
+  /// Background color of the dropdown menu.
+  final Color? dropdownBackgroundColor;
+
+  /// Creates a new [MsDropSingleMultiSelector] widget.
   const MsDropSingleMultiSelector({
     super.key,
     required this.items,
@@ -93,8 +153,6 @@ class MsDropSingleMultiSelector extends StatefulWidget {
     this.dropdownItemPrefixStyle,
     this.dropdownItemSuffixStyle,
     this.textFieldHint,
-
-    /// ✅ NEW CUSTOM ICONS
     this.searchIcon,
     this.menuIcon,
     this.clearIcon,
