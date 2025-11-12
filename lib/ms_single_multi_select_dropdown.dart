@@ -95,6 +95,9 @@ class MsDropSingleMultiSelector extends StatefulWidget {
   /// Width of the dropdown menu.
   final dynamic dropdownMenuWidth;
 
+  /// Height for the input field.
+  final double? dropdownHeight;
+
   /// Style for the text field input.
   final TextStyle? textFieldStyle;
 
@@ -159,6 +162,7 @@ class MsDropSingleMultiSelector extends StatefulWidget {
     this.textFieldBackgroundColor,
     this.dropdownItemHighlightColor,
     this.dropdownBackgroundColor,
+    this.dropdownHeight,
   });
 
   @override
@@ -703,6 +707,7 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
       child: CompositedTransformTarget(
         link: _layerLink,
         child: SizedBox(
+          height: widget.dropdownHeight ?? 45, // set width here
           width: widget.dropdownWidth ?? double.infinity, // set width here
           child: TextField(
             controller: _searchCtrl,
@@ -725,6 +730,8 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
               filled: true, // ✅ important
               fillColor: widget.textFieldBackgroundColor ??
                   Colors.white, // use parent color or default
+
+              contentPadding: EdgeInsets.zero, // will auto-center
               prefixIcon: widget.searchIcon ?? const Icon(Icons.search),
 
               suffixIcon: Row(

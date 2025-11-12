@@ -114,6 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       items: cities,
                       controller: singleController,
                       dropdownWidth: 400, // fixed width for dropdown
+                      dropdownHeight: 40,
                       multiSelect: false,
                       onSubmittedSingle: (v) {
                         log("Submitted: ${v?.name}");
