@@ -87,6 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               cities.isNotEmpty
                   ? MsDropSingleMultiSelector(
+                      showSuffixCode: true,
                       searchFieldBackgroundColor: Colors.yellow[100],
 
                       // dropdownBackgroundColor: const Color.fromARGB(
@@ -118,6 +119,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       dropdownWidth: 400, // fixed width for dropdown
                       dropdownHeight: 40,
                       multiSelect: false,
+                      onChangedSingle: (v) {
+                        if (v != null && v.name.isNotEmpty) {}
+                      },
                       onSubmittedSingle: (v) {
                         log("Submitted: ${v?.name}");
 

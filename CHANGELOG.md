@@ -1,3 +1,8 @@
+## [0.0.13] - 2025-11-12
+
+- Initial public release of `ms_single_multi_select_dropdown`
+- Prefix And Suffix Code Visibility Handle By User
+
 ## [0.0.12] - 2025-11-12
 
 - Initial public release of `ms_single_multi_select_dropdown`

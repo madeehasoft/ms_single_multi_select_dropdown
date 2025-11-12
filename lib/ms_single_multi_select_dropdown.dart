@@ -153,6 +153,12 @@ class MsDropSingleMultiSelector extends StatefulWidget {
   /// Background color of the dropdown menu.
   final Color? dropdownBackgroundColor;
 
+  /// showPrefixCode.
+  final bool showPrefixCode;
+
+  /// showSuffixCode.
+  final bool showSuffixCode;
+
   /// Creates a new [MsDropSingleMultiSelector] widget.
   const MsDropSingleMultiSelector({
     super.key,
@@ -180,6 +186,8 @@ class MsDropSingleMultiSelector extends StatefulWidget {
     this.dropdownBackgroundColor,
     this.dropdownHeight,
     this.onClearTapped,
+    this.showPrefixCode = false,
+    this.showSuffixCode = false,
   });
 
   @override
@@ -470,27 +478,46 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
           },
 
           child: Container(
-            color: isHighlighted
-                ? widget.dropdownItemHighlightColor ?? Colors.blue.shade100
-                : widget.dropdownBackgroundColor ?? Colors.transparent,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            child: Row(
-              children: [
-                Text(e.prefixCode ?? "", style: dropdownItemPrefixStyle),
-                const SizedBox(width: 6),
-                Expanded(child: Text(e.name, style: dropdownItemStyle)),
-                const SizedBox(width: 6),
-                Text(e.suffixCode ?? "", style: dropdownItemSufixStyle),
-                if (widget.multiSelect) const SizedBox(width: 8),
-                if (widget.multiSelect)
-                  Icon(
-                    isSelected
-                        ? Icons.check_box
-                        : Icons.check_box_outline_blank,
-                  ),
-              ],
-            ),
-          ),
+              color: isHighlighted
+                  ? widget.dropdownItemHighlightColor ?? Colors.blue.shade100
+                  : widget.dropdownBackgroundColor ?? Colors.transparent,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              child: Row(
+                children: [
+                  if (widget.showPrefixCode)
+                    Text(e.prefixCode ?? "", style: dropdownItemPrefixStyle),
+                  if (widget.showPrefixCode) const SizedBox(width: 6),
+                  Expanded(child: Text(e.name, style: dropdownItemStyle)),
+                  if (widget.showSuffixCode) const SizedBox(width: 6),
+                  if (widget.showSuffixCode)
+                    Text(e.suffixCode ?? "", style: dropdownItemSufixStyle),
+                  if (widget.multiSelect) const SizedBox(width: 8),
+                  if (widget.multiSelect)
+                    Icon(
+                      isSelected
+                          ? Icons.check_box
+                          : Icons.check_box_outline_blank,
+                    ),
+                ],
+              )
+
+              // Row(
+              //   children: [
+              //     Text(e.prefixCode ?? "", style: dropdownItemPrefixStyle),
+              //     const SizedBox(width: 6),
+              //     Expanded(child: Text(e.name, style: dropdownItemStyle)),
+              //     const SizedBox(width: 6),
+              //     Text(e.suffixCode ?? "", style: dropdownItemSufixStyle),
+              //     if (widget.multiSelect) const SizedBox(width: 8),
+              //     if (widget.multiSelect)
+              //       Icon(
+              //         isSelected
+              //             ? Icons.check_box
+              //             : Icons.check_box_outline_blank,
+              //       ),
+              //   ],
+              // ),
+              ),
         );
       },
     );
