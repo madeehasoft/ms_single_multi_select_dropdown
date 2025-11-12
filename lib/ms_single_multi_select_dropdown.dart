@@ -8,6 +8,8 @@ class MsDropController {
   MsClass? selectedSingle;
   List<MsClass> selectedMulti = [];
 
+  String text = ""; // ✅ ADD THIS
+
   void requestFocus() => focusNode.requestFocus();
   void unfocus() => focusNode.unfocus();
   void dispose() => focusNode.dispose();
@@ -66,7 +68,13 @@ class MsDropSingleMultiSelector extends StatefulWidget {
   final TextStyle? buttonTextStyle;
   final ButtonStyle? buttonStyle;
   final String? textFieldHint;
-
+  final Icon? searchIcon;
+  final Icon? menuIcon;
+  final Icon? clearIcon;
+  final Color?
+      textFieldBackgroundColor; // add this inside MsDropSingleMultiSelector
+  final Color? dropdownItemHighlightColor; // highlighted item background
+  final Color? dropdownBackgroundColor; // NEW
   const MsDropSingleMultiSelector({
     super.key,
     required this.items,
@@ -85,6 +93,14 @@ class MsDropSingleMultiSelector extends StatefulWidget {
     this.dropdownItemPrefixStyle,
     this.dropdownItemSuffixStyle,
     this.textFieldHint,
+
+    /// ✅ NEW CUSTOM ICONS
+    this.searchIcon,
+    this.menuIcon,
+    this.clearIcon,
+    this.textFieldBackgroundColor,
+    this.dropdownItemHighlightColor,
+    this.dropdownBackgroundColor,
   });
 
   @override
@@ -93,6 +109,11 @@ class MsDropSingleMultiSelector extends StatefulWidget {
 }
 
 class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
+  bool get hasSelected {
+    if (widget.multiSelect) return selectedMulti.isNotEmpty;
+    return selectedSingle != null;
+  }
+
   String get textFieldHint => widget.textFieldHint ?? "Search...";
 
   TextStyle get textFieldStyle =>
@@ -148,13 +169,13 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
 
     filtered = List.from(widget.items);
 
-    _focusNode.addListener(() {
-      if (_focusNode.hasFocus) {
-        _showOverlay();
-      } else {
-        //if (!mouseOverDropdown) _removeOverlay();
-      }
-    });
+    // _focusNode.addListener(() {
+    //   if (_focusNode.hasFocus) {
+    //     _showOverlay();
+    //   } else {
+    //     //if (!mouseOverDropdown) _removeOverlay();
+    //   }
+    // });
   }
 
   @override
@@ -233,6 +254,7 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
                 offset: Offset(0, size.height + 4),
                 child: Material(
                   elevation: 4,
+                  color: widget.dropdownBackgroundColor ?? Colors.white, // NEW
                   borderRadius: BorderRadius.circular(6),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 150),
@@ -256,6 +278,7 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
 
                                       // ✅ Reset search text
                                       _searchCtrl.clear();
+                                      widget.controller?.text = ""; // ✅ update
 
                                       // ✅ Show all items again
                                       filtered = List.from(widget.items);
@@ -350,7 +373,9 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
           },
 
           child: Container(
-            color: isHighlighted ? Colors.blue.shade100 : Colors.transparent,
+            color: isHighlighted
+                ? widget.dropdownItemHighlightColor ?? Colors.blue.shade100
+                : widget.dropdownBackgroundColor ?? Colors.transparent,
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             child: Row(
               children: [
@@ -418,6 +443,41 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
       return KeyEventResult.handled;
     }
 
+//     if (data == LogicalKeyboardKey.enter ||
+//     data == LogicalKeyboardKey.numpadEnter) {
+
+//   final bool noSelection = selectedSingle == null && !widget.multiSelect;
+//   final bool noHighlight = highlighted < 0 || highlighted >= filtered.length;
+//   final bool emptySearch = _searchCtrl.text.trim().isEmpty;
+
+//   // ✅ CASE: Enter pressed with blank or no selection → KEEP FOCUS & DO NOTHING
+//   if (!widget.multiSelect && noSelection && emptySearch) {
+//     WidgetsBinding.instance.addPostFrameCallback((_) {
+//       _focusNode.requestFocus();
+//     });
+//     return KeyEventResult.handled;
+//   }
+
+//   // ✅ CASE: No highlight → DO NOTHING, KEEP FOCUS
+//   if (!widget.multiSelect && noHighlight) {
+//     WidgetsBinding.instance.addPostFrameCallback((_) {
+//       _focusNode.requestFocus();
+//     });
+//     return KeyEventResult.handled;
+//   }
+
+//   // ✅ Normal behavior: select highlighted item
+//   if (!widget.multiSelect && highlighted >= 0 && highlighted < filtered.length) {
+//     final item = filtered[highlighted];
+//     selectSingle(item);
+//     _focusNode.unfocus();
+//     _removeOverlay();
+//     widget.onSubmittedSingle?.call(selectedSingle);
+//   }
+
+//   return KeyEventResult.handled;
+// }
+
     if (data == LogicalKeyboardKey.controlLeft ||
         data == LogicalKeyboardKey.controlRight) {
       if (highlighted >= 0 && highlighted < filtered.length) {
@@ -435,11 +495,13 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
         if (widget.multiSelect) {
           selectedMulti.clear();
           _searchCtrl.clear();
+          widget.controller?.text = ""; // ✅ update
           widget.controller?.selectedMulti.clear();
           widget.onChangedMulti?.call([]);
         } else {
           selectedSingle = null;
           _searchCtrl.clear();
+          widget.controller?.text = ""; // ✅ update
           widget.controller?.selectedSingle = null;
           widget.onChangedSingle?.call(null);
         }
@@ -481,6 +543,7 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
       widget.onChangedMulti?.call(selectedMulti.toList());
 
       _searchCtrl.text = 'Selected Item (${selectedMulti.length})';
+      widget.controller?.text = _searchCtrl.text; // ✅ update
       _searchCtrl.selection = TextSelection(
         baseOffset: 0,
         extentOffset: _searchCtrl.text.length,
@@ -494,6 +557,7 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
     setState(() {
       selectedSingle = item;
       _searchCtrl.text = item.name;
+      widget.controller?.text = _searchCtrl.text; // ✅ update
       _searchCtrl.selection = TextSelection.fromPosition(
         TextPosition(offset: _searchCtrl.text.length),
       );
@@ -623,22 +687,77 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
             style: textFieldStyle,
             onChanged: (v) {
               setState(() {
+                widget.controller?.text = v; // ✅ update parent controller
                 applyFilter(v);
-                _overlayEntry?.markNeedsBuild();
+                if (_overlayEntry == null)
+                  _showOverlay();
+                else
+                  _overlayEntry?.markNeedsBuild();
               });
-            },
-            onSubmitted: (v) {
-              if (widget.multiSelect) {
-                //widget.onSubmittedMulti?.call(selectedMulti.toList());
-              } else {
-                widget.onSubmittedSingle?.call(selectedSingle);
-              }
             },
             decoration: InputDecoration(
               hintText: textFieldHint,
               border: const OutlineInputBorder(),
-              prefixIcon: const Icon(Icons.search),
-              suffixIcon: const Icon(Icons.menu_open_rounded),
+              filled: true, // ✅ important
+              fillColor: widget.textFieldBackgroundColor ??
+                  Colors.white, // use parent color or default
+              prefixIcon: widget.searchIcon ?? const Icon(Icons.search),
+
+              suffixIcon: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // ✅ CLEAR ICON (only visible when selected something)
+                  if (hasSelected)
+                    MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            if (widget.multiSelect) {
+                              selectedMulti.clear();
+                              widget.controller?.selectedMulti.clear();
+                              widget.onChangedMulti?.call([]);
+                            } else {
+                              selectedSingle = null;
+                              widget.controller?.selectedSingle = null;
+                              widget.onChangedSingle?.call(null);
+                            }
+
+                            _searchCtrl.clear();
+                            widget.controller?.text = ""; // ✅ update
+                            applyFilter("");
+                          });
+
+                          _overlayEntry?.markNeedsBuild();
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                          child: widget.clearIcon ??
+                              const Icon(Icons.clear, size: 22),
+                        ),
+                      ),
+                    ),
+
+                  /// ✅ DROPDOWN ICON
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (_overlayEntry == null) {
+                          _showOverlay();
+                        } else {
+                          _removeOverlay();
+                        }
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        child: widget.menuIcon ??
+                            const Icon(Icons.menu_open_rounded, size: 22),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

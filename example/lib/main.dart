@@ -85,6 +85,21 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               cities.isNotEmpty
                   ? MsDropSingleMultiSelector(
+                      textFieldBackgroundColor: Colors.yellow[100],
+
+                      // dropdownBackgroundColor: const Color.fromARGB(
+                      //   255,
+                      //   255,
+                      //   252,
+                      //   212,
+                      // ), // dropdown background
+
+                      // dropdownItemHighlightColor: Colors.green.shade200,
+                      clearIcon: Icon(
+                        Icons.close_rounded,
+                        color: Colors.red,
+                        weight: 100,
+                      ),
                       dropdownItemPrefixStyle: TextStyle(color: Colors.red),
                       dropdownItemStyle: TextStyle(
                         color: const Color.fromARGB(255, 28, 137, 46),
@@ -102,7 +117,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       multiSelect: false,
                       onSubmittedSingle: (v) {
                         log("Submitted: ${v?.name}");
-                        //multyController.requestFocus();
+
+                        multyController.requestFocus();
                       },
                     )
                   : Container(),
@@ -110,6 +126,12 @@ class _MyHomePageState extends State<MyHomePage> {
               //============================================================
               cities.isNotEmpty
                   ? MsDropSingleMultiSelector(
+                      textFieldBackgroundColor: const Color.fromARGB(
+                        255,
+                        255,
+                        231,
+                        211,
+                      ), // set the background color here
                       controller: multyController,
                       items: cities,
                       multiSelect: true,
@@ -132,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
 
                       onSubmittedMulti: (v) {
-                        //singleController.requestFocus();
+                        singleController.requestFocus();
                       },
                     )
                   : Container(),
@@ -141,6 +163,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
               ElevatedButton(
                 onPressed: () {
+                  log(multyController.text);
+
                   if (multyController.isSelected ||
                       singleController.isSelected) {
                     if (!singleController.isSelected) {

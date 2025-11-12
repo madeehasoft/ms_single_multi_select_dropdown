@@ -2,6 +2,13 @@
 
 - Initial public release of `ms_single_multi_select_dropdown`
 - Supports single and multi-select modes
+- Icon and icon color change
+- Background color changing option
+
+## [0.0.4] - 2025-11-11
+
+- Initial public release of `ms_single_multi_select_dropdown`
+- Supports single and multi-select modes
 - Keyboard navigation, overlay stability, and accessibility features
 - Controller-based external control
 
