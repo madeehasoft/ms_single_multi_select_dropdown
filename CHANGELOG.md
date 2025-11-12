@@ -1,4 +1,4 @@
-## [0.0.4] - 2025-11-11
+## [0.0.5] - 2025-11-11
 
 - Initial public release of `ms_single_multi_select_dropdown`
 - Supports single and multi-select modes
