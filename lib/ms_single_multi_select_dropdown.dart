@@ -115,7 +115,7 @@ class MsDropSingleMultiSelector extends StatefulWidget {
   final double? dropdownHeight;
 
   /// Style for the text field input.
-  final TextStyle? textFieldStyle;
+  final TextStyle? searchFieldStyle;
 
   /// Style for dropdown items.
   final TextStyle? dropdownItemStyle;
@@ -133,7 +133,7 @@ class MsDropSingleMultiSelector extends StatefulWidget {
   final ButtonStyle? buttonStyle;
 
   /// Hint text for the input field.
-  final String? textFieldHint;
+  final String? searchFieldHint;
 
   /// Icon shown for search functionality.
   final Icon? searchIcon;
@@ -145,7 +145,7 @@ class MsDropSingleMultiSelector extends StatefulWidget {
   final Icon? clearIcon;
 
   /// Background color of the text field.
-  final Color? textFieldBackgroundColor;
+  final Color? searchFieldBackgroundColor;
 
   /// Background color for highlighted dropdown items.
   final Color? dropdownItemHighlightColor;
@@ -165,17 +165,17 @@ class MsDropSingleMultiSelector extends StatefulWidget {
     this.controller,
     this.dropdownWidth,
     this.dropdownMenuWidth,
-    this.textFieldStyle,
+    this.searchFieldStyle,
     this.dropdownItemStyle,
     this.buttonTextStyle,
     this.buttonStyle,
     this.dropdownItemPrefixStyle,
     this.dropdownItemSuffixStyle,
-    this.textFieldHint,
+    this.searchFieldHint,
     this.searchIcon,
     this.menuIcon,
     this.clearIcon,
-    this.textFieldBackgroundColor,
+    this.searchFieldBackgroundColor,
     this.dropdownItemHighlightColor,
     this.dropdownBackgroundColor,
     this.dropdownHeight,
@@ -193,10 +193,10 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
     return selectedSingle != null;
   }
 
-  String get textFieldHint => widget.textFieldHint ?? "Search...";
+  String get searchFieldHint => widget.searchFieldHint ?? "Search...";
 
-  TextStyle get textFieldStyle =>
-      widget.textFieldStyle ??
+  TextStyle get searchFieldStyle =>
+      widget.searchFieldStyle ??
       const TextStyle(fontSize: 14, color: Colors.black);
 
   TextStyle get dropdownItemStyle =>
@@ -747,7 +747,7 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
           child: TextField(
             controller: _searchCtrl,
             focusNode: _focusNode,
-            style: textFieldStyle,
+            style: searchFieldStyle,
             onChanged: (v) {
               setState(() {
                 widget.controller?.text = v; // ✅ update parent controller
@@ -760,10 +760,10 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
               });
             },
             decoration: InputDecoration(
-              hintText: textFieldHint,
+              hintText: searchFieldHint,
               border: const OutlineInputBorder(),
               filled: true, // ✅ important
-              fillColor: widget.textFieldBackgroundColor ??
+              fillColor: widget.searchFieldBackgroundColor ??
                   Colors.white, // use parent color or default
 
               contentPadding: EdgeInsets.zero, // will auto-center

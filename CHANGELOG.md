@@ -1,3 +1,11 @@
+## [0.0.11] - 2025-11-12
+
+- Initial public release of `ms_single_multi_select_dropdown`
+- textFieldStyle To searchFieldStyle
+- textFieldHint To searchFieldHint
+- textIcon To searchIcon
+- textFieldBackgroundColor To searchFieldBackgroundColor
+
 ## [0.0.10] - 2025-11-12
 
 - Initial public release of `ms_single_multi_select_dropdown`

@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               cities.isNotEmpty
                   ? MsDropSingleMultiSelector(
-                      textFieldBackgroundColor: Colors.yellow[100],
+                      searchFieldBackgroundColor: Colors.yellow[100],
 
                       // dropdownBackgroundColor: const Color.fromARGB(
                       //   255,
@@ -110,9 +110,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       dropdownItemSuffixStyle: TextStyle(
                         color: const Color.fromARGB(255, 49, 8, 235),
                       ),
-                      textFieldStyle: TextStyle(fontWeight: FontWeight.bold),
+                      searchFieldStyle: TextStyle(fontWeight: FontWeight.bold),
 
-                      textFieldHint: "Search Single...",
+                      searchFieldHint: "Search Single...",
                       items: cities,
                       controller: singleController,
                       dropdownWidth: 400, // fixed width for dropdown
@@ -132,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
               //============================================================
               cities.isNotEmpty
                   ? MsDropSingleMultiSelector(
-                      textFieldBackgroundColor: const Color.fromARGB(
+                      searchFieldBackgroundColor: const Color.fromARGB(
                         255,
                         255,
                         231,
@@ -145,8 +145,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: const Color.fromARGB(255, 167, 26, 26),
                         fontWeight: FontWeight.bold,
                       ),
-                      textFieldStyle: TextStyle(fontWeight: FontWeight.bold),
-                      textFieldHint: "Search Multiple...",
+                      searchFieldStyle: TextStyle(fontWeight: FontWeight.bold),
+                      searchFieldHint: "Search Multiple...",
                       dropdownWidth: 400, // fixed width for dropdown
                       //controller: MsDropController,
                       onChangedMulti: (selected) {

@@ -31,4 +31,4 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  ms_single_multi_select: ^0.0.10
+  ms_single_multi_select: ^0.0.11
