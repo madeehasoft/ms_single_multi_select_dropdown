@@ -437,18 +437,18 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             child: Row(
               children: [
+                Text(e.prefixCode, style: dropdownItemPrefixStyle),
+                const SizedBox(width: 6),
+                Expanded(child: Text(e.name, style: dropdownItemStyle)),
+                const SizedBox(width: 6),
+                Text(e.suffixCode, style: dropdownItemSufixStyle),
+                if (widget.multiSelect) const SizedBox(width: 8),
                 if (widget.multiSelect)
                   Icon(
                     isSelected
                         ? Icons.check_box
                         : Icons.check_box_outline_blank,
                   ),
-                if (widget.multiSelect) const SizedBox(width: 8),
-                Text(e.prefixCode, style: dropdownItemPrefixStyle),
-                const SizedBox(width: 6),
-                Expanded(child: Text(e.name, style: dropdownItemStyle)),
-                const SizedBox(width: 6),
-                Text(e.suffixCode, style: dropdownItemSufixStyle),
               ],
             ),
           ),
@@ -500,41 +500,6 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
       }
       return KeyEventResult.handled;
     }
-
-//     if (data == LogicalKeyboardKey.enter ||
-//     data == LogicalKeyboardKey.numpadEnter) {
-
-//   final bool noSelection = selectedSingle == null && !widget.multiSelect;
-//   final bool noHighlight = highlighted < 0 || highlighted >= filtered.length;
-//   final bool emptySearch = _searchCtrl.text.trim().isEmpty;
-
-//   // ✅ CASE: Enter pressed with blank or no selection → KEEP FOCUS & DO NOTHING
-//   if (!widget.multiSelect && noSelection && emptySearch) {
-//     WidgetsBinding.instance.addPostFrameCallback((_) {
-//       _focusNode.requestFocus();
-//     });
-//     return KeyEventResult.handled;
-//   }
-
-//   // ✅ CASE: No highlight → DO NOTHING, KEEP FOCUS
-//   if (!widget.multiSelect && noHighlight) {
-//     WidgetsBinding.instance.addPostFrameCallback((_) {
-//       _focusNode.requestFocus();
-//     });
-//     return KeyEventResult.handled;
-//   }
-
-//   // ✅ Normal behavior: select highlighted item
-//   if (!widget.multiSelect && highlighted >= 0 && highlighted < filtered.length) {
-//     final item = filtered[highlighted];
-//     selectSingle(item);
-//     _focusNode.unfocus();
-//     _removeOverlay();
-//     widget.onSubmittedSingle?.call(selectedSingle);
-//   }
-
-//   return KeyEventResult.handled;
-// }
 
     if (data == LogicalKeyboardKey.controlLeft ||
         data == LogicalKeyboardKey.controlRight) {
@@ -747,10 +712,11 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
               setState(() {
                 widget.controller?.text = v; // ✅ update parent controller
                 applyFilter(v);
-                if (_overlayEntry == null)
+                if (_overlayEntry == null) {
                   _showOverlay();
-                else
+                } else {
                   _overlayEntry?.markNeedsBuild();
+                }
               });
             },
             decoration: InputDecoration(
@@ -787,6 +753,11 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
                           });
 
                           _overlayEntry?.markNeedsBuild();
+
+                          // ✅ ALWAYS FOCUS
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            _focusNode.requestFocus();
+                          });
                         },
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -806,6 +777,11 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
                         } else {
                           _removeOverlay();
                         }
+
+                        // ✅ ALWAYS FOCUS
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          _focusNode.requestFocus();
+                        });
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.0),
