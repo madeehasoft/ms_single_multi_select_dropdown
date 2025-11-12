@@ -200,11 +200,11 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
       const TextStyle(fontSize: 14, color: Colors.black);
 
   TextStyle get dropdownItemStyle =>
-      widget.dropdownItemPrefixStyle ??
+      widget.dropdownItemStyle ??
       const TextStyle(fontSize: 14, color: Colors.black87);
 
   TextStyle get dropdownItemPrefixStyle =>
-      widget.dropdownItemStyle ??
+      widget.dropdownItemPrefixStyle ??
       const TextStyle(fontSize: 14, color: Colors.black87);
 
   TextStyle get dropdownItemSufixStyle =>

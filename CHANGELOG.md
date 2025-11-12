@@ -1,3 +1,8 @@
+## [0.0.12] - 2025-11-12
+
+- Initial public release of `ms_single_multi_select_dropdown`
+- DropDown Item Style Change Option Add
+
 ## [0.0.11] - 2025-11-12
 
 - Initial public release of `ms_single_multi_select_dropdown`
