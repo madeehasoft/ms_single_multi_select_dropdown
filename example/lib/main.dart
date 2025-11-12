@@ -29,6 +29,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final MsDropController multyController = MsDropController();
   final MsDropController singleController = MsDropController();
+
   FocusNode useridFTB = FocusNode();
   List<MsClass> cities = [];
 
@@ -122,6 +123,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
                         multyController.requestFocus();
                       },
+                      onClearTapped: () {
+                        print("Clear icon tapped!"); // ✅ main page reacts here
+                      },
                     )
                   : Container(),
 
@@ -185,6 +189,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   }
                 },
                 child: Text('Check Select Or Not Search'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  singleController.clear(); // ✅ clear dropdown & text
+                  multyController.clear(); // ✅ clear dropdown & text
+                },
+                child: const Text("Clear Single Dropdown"),
               ),
             ],
           ),

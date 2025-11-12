@@ -1,3 +1,8 @@
+## [0.0.10] - 2025-11-12
+
+- Initial public release of `ms_single_multi_select_dropdown`
+- User can detect and alternate clear controller
+
 ## [0.0.9] - 2025-11-12
 
 - Initial public release of `ms_single_multi_select_dropdown`

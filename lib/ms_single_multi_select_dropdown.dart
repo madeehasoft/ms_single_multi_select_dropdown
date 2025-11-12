@@ -18,6 +18,9 @@ class MsDropController {
   /// Text input from the search field.
   String text = "";
 
+  /// Optional callback to notify the widget to rebuild
+  VoidCallback? notifyClear;
+
   /// Requests focus for the dropdown input field.
   void requestFocus() => focusNode.requestFocus();
 
@@ -29,6 +32,16 @@ class MsDropController {
 
   /// Returns true if any item is selected.
   bool get isSelected => selectedSingle != null || selectedMulti.isNotEmpty;
+
+  /// ------------------ CLEAR ------------------
+  void clear() {
+    selectedSingle = null;
+    selectedMulti.clear();
+    text = "";
+
+    // Notify the widget to rebuild
+    notifyClear?.call();
+  }
 }
 
 /// ------------------ MODEL ------------------
@@ -85,6 +98,9 @@ class MsDropSingleMultiSelector extends StatefulWidget {
 
   /// Callback when Enter is pressed in multi-select mode.
   final void Function(List<MsClass>)? onSubmittedMulti;
+
+  /// Callback when clear icon is tapped
+  final VoidCallback? onClearTapped;
 
   /// Optional controller to manage focus and selection externally.
   final MsDropController? controller;
@@ -163,6 +179,7 @@ class MsDropSingleMultiSelector extends StatefulWidget {
     this.dropdownItemHighlightColor,
     this.dropdownBackgroundColor,
     this.dropdownHeight,
+    this.onClearTapped,
   });
 
   @override
@@ -231,6 +248,11 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
 
     filtered = List.from(widget.items);
 
+// ✅ Listen for controller clear
+    if (widget.controller != null) {
+      widget.controller!.notifyClear = _onControllerClear;
+    }
+
     // _focusNode.addListener(() {
     //   if (_focusNode.hasFocus) {
     //     _showOverlay();
@@ -238,6 +260,19 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
     //     //if (!mouseOverDropdown) _removeOverlay();
     //   }
     // });
+  }
+
+  // ------------------ HELPER METHOD ------------------
+  void _onControllerClear() {
+    setState(() {
+      selectedSingle = null;
+      selectedMulti.clear();
+      _searchCtrl.clear();
+      applyFilter("");
+      highlighted = filtered.isNotEmpty ? 0 : -1;
+    });
+
+    _overlayEntry?.markNeedsBuild();
   }
 
   @override
@@ -760,6 +795,9 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
                           });
 
                           _overlayEntry?.markNeedsBuild();
+
+                          // Notify main page
+                          widget.onClearTapped?.call(); // ✅ NEW
 
                           // ✅ ALWAYS FOCUS
                           WidgetsBinding.instance.addPostFrameCallback((_) {
