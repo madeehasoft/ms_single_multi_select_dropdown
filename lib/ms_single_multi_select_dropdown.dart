@@ -37,19 +37,19 @@ class MsDropController {
 /// Includes optional prefix and suffix codes for categorization or metadata.
 class MsClass {
   /// Prefix code used for grouping or filtering.
-  final String prefixCode;
+  final String? prefixCode;
 
   /// Display name of the item.
   final String name;
 
   /// Suffix code used for additional metadata.
-  final String suffixCode;
+  final String? suffixCode;
 
   /// Creates a new [MsClass] with the given prefix, name, and suffix.
   const MsClass({
-    required this.prefixCode,
+    this.prefixCode,
     required this.name,
-    required this.suffixCode,
+    this.suffixCode,
   });
 
   @override
@@ -441,11 +441,11 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             child: Row(
               children: [
-                Text(e.prefixCode, style: dropdownItemPrefixStyle),
+                Text(e.prefixCode ?? "", style: dropdownItemPrefixStyle),
                 const SizedBox(width: 6),
                 Expanded(child: Text(e.name, style: dropdownItemStyle)),
                 const SizedBox(width: 6),
-                Text(e.suffixCode, style: dropdownItemSufixStyle),
+                Text(e.suffixCode ?? "", style: dropdownItemSufixStyle),
                 if (widget.multiSelect) const SizedBox(width: 8),
                 if (widget.multiSelect)
                   Icon(
@@ -809,12 +809,10 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
   void applyFilter(String q) {
     final qq = q.toLowerCase();
     filtered = widget.items
-        .where(
-          (e) =>
-              e.name.toLowerCase().contains(qq) ||
-              e.prefixCode.toLowerCase().contains(qq) ||
-              e.suffixCode.toLowerCase().contains(qq),
-        )
+        .where((e) =>
+            e.name.toLowerCase().contains(qq) ||
+            (e.prefixCode ?? "").toLowerCase().contains(qq) ||
+            (e.suffixCode ?? "").toLowerCase().contains(qq))
         .toList();
 
     highlighted = filtered.isNotEmpty ? 0 : -1;

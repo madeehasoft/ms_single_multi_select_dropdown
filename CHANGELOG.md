@@ -1,3 +1,8 @@
+## [0.0.9] - 2025-11-12
+
+- Initial public release of `ms_single_multi_select_dropdown`
+- Set both prefix & suffix are optional
+
 ## [0.0.8] - 2025-11-12
 
 - Initial public release of `ms_single_multi_select_dropdown`

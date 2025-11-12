@@ -60,6 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
       cities = data
           .map(
             (item) => MsClass(
+              //Both prefix & suffix are optional
               prefixCode: item['prefixCode'],
               name: item['name'],
               suffixCode: item['suffixCode'],
