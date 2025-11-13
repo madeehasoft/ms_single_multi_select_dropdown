@@ -1,3 +1,8 @@
+## [0.0.14] - 2025-11-12
+
+- Initial public release of `ms_single_multi_select_dropdown`
+- Select an item programmatically from the main screen
+
 ## [0.0.13] - 2025-11-12
 
 - Initial public release of `ms_single_multi_select_dropdown`

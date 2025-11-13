@@ -201,6 +201,34 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 child: const Text("Clear Single Dropdown"),
               ),
+              ElevatedButton(
+                onPressed: () {
+                  //Future.delayed(Duration(seconds: 2), () {
+                  // Programmatically select an item
+                  final item = MsClass(
+                    prefixCode: "Prefix Code 003",
+                    name: "Bangladesh",
+                    suffixCode: "Suffix Code 003",
+                  );
+                  singleController.selectSingleItem(item);
+                  //});
+
+                  // Programmatically select multiple item
+                  multyController.selectMultiItems([
+                    MsClass(
+                      prefixCode: "Prefix Code 001",
+                      name: "Dhaka",
+                      suffixCode: "Suffix Code 001",
+                    ),
+                    MsClass(
+                      prefixCode: "Prefix Code 003",
+                      name: "Bangladesh",
+                      suffixCode: "Suffix Code 003",
+                    ),
+                  ]);
+                },
+                child: const Text("Manual Select"),
+              ),
             ],
           ),
         ),

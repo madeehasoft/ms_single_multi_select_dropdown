@@ -42,6 +42,27 @@ class MsDropController {
     // Notify the widget to rebuild
     notifyClear?.call();
   }
+
+  /// Programmatically select a single item and update the widget
+  void selectSingleItem(MsClass item) {
+    selectedSingle = item;
+    text = item.name;
+    notifyClear?.call(); // triggers UI refresh
+  }
+
+  /// Programmatically select multiple items
+  // void selectMultiItems(List<MsClass> items) {
+  //   selectedMulti = items;
+  //   text = 'Selected Item (${items.length})';
+  //   notifyClear?.call(); // triggers UI refresh
+  // }
+
+  void selectMultiItems(List<MsClass> items) {
+    selectedMulti = items;
+    selectedSingle = null;
+    text = 'Selected Item (${items.length})';
+    notifyClear?.call(); // 🔔 triggers _onControllerClear
+  }
 }
 
 /// ------------------ MODEL ------------------
@@ -271,15 +292,33 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
   }
 
   // ------------------ HELPER METHOD ------------------
+  // void _onControllerClear() {
+  //   setState(() {
+  //     selectedSingle = null;
+  //     selectedMulti.clear();
+  //     _searchCtrl.clear();
+  //     applyFilter("");
+  //     highlighted = filtered.isNotEmpty ? 0 : -1;
+  //   });
+
+  //   _overlayEntry?.markNeedsBuild();
+  // }
+
   void _onControllerClear() {
     setState(() {
-      selectedSingle = null;
-      selectedMulti.clear();
-      _searchCtrl.clear();
-      applyFilter("");
+      // 🟢 Sync local widget state with controller state
+      selectedSingle = widget.controller?.selectedSingle;
+      selectedMulti = widget.controller?.selectedMulti.toSet() ?? {};
+
+      // 🟢 Update search text from controller
+      _searchCtrl.text = widget.controller?.text ?? "";
+
+      // 🟢 Apply filter based on current text
+      applyFilter(widget.controller?.text ?? "");
       highlighted = filtered.isNotEmpty ? 0 : -1;
     });
 
+    // 🟢 Rebuild dropdown overlay if visible
     _overlayEntry?.markNeedsBuild();
   }
 
