@@ -60,7 +60,7 @@ class MsDropController {
   void selectMultiItems(List<MsClass> items) {
     selectedMulti = items;
     selectedSingle = null;
-    text = 'Selected Item (${items.length})';
+    //text = 'Selected Item (${items.length})';
     notifyClear?.call(); // 🔔 triggers _onControllerClear
   }
 }
@@ -333,15 +333,60 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
   }
 
   /// ------------------ Overlay ------------------
+  // void _showOverlay() {
+  //   _overlayEntry ??= _createOverlay();
+  //   Overlay.of(context).insert(_overlayEntry!);
+  // }
+
   void _showOverlay() {
-    _overlayEntry ??= _createOverlay();
-    Overlay.of(context).insert(_overlayEntry!);
+  // 🔥 Always restore items if search text is empty
+  if (_searchCtrl.text.isEmpty) {
+    filtered = List.from(widget.items);
+    highlighted = filtered.isNotEmpty ? 0 : -1;
   }
 
+  _overlayEntry ??= _createOverlay();
+  Overlay.of(context).insert(_overlayEntry!);
+}
+
+
+  // void _removeOverlay() {
+  //   _overlayEntry?.remove();
+  //   _overlayEntry = null;
+  //   if (selectedMulti.isNotEmpty) {
+  //   _searchCtrl.text = 'Selected Item (${selectedMulti.length})';   
+  //   } else{
+  //     _searchCtrl.text = '';
+  //   }
+   
+  // }
+
   void _removeOverlay() {
-    _overlayEntry?.remove();
-    _overlayEntry = null;
+  _overlayEntry?.remove();
+  _overlayEntry = null;
+
+  if (widget.multiSelect) {
+    // Multi-select mode
+    if (selectedMulti.isNotEmpty) {
+      _searchCtrl.text = 'Selected Item (${selectedMulti.length})';
+    } else {
+      _searchCtrl.text = '';
+    }
+  } else {
+    // Single-select mode
+    if (selectedSingle != null) {
+      _searchCtrl.text = selectedSingle!.name;
+    } else {
+      _searchCtrl.text = '';
+    }
   }
+
+  // Reset filtered items for next open
+  filtered = List.from(widget.items);
+  highlighted = filtered.isNotEmpty ? 0 : -1;
+}
+
+
 
   OverlayEntry _createOverlay() {
     RenderBox renderBox = context.findRenderObject() as RenderBox;
@@ -410,59 +455,173 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
                         if (widget.multiSelect)
                           Padding(
                             padding: const EdgeInsets.all(8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      selectedMulti.clear();
-                                      widget.controller?.selectedMulti.clear();
-                                      widget.onChangedMulti?.call([]);
+                          child: 
+  // Row(
+  //                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                             children: [
+                                
+  //                               ElevatedButton(
+  //                                   style: ElevatedButton.styleFrom(
+  //   //fixedSize: const Size(100, 100), // Square size: 100x100
+  //   shape: RoundedRectangleBorder(
+  //     borderRadius: BorderRadiusGeometry.all(Radius.circular(5)) // No rounded corners
+  //   ),
+  //   elevation: 8, // Optional: controls shadow depth
+  //  // backgroundColor: Colors.blue, // Optional: button color
+  // ),
+  //                                 onPressed: () {
+  //                                   setState(() {
+  //                                     selectedMulti.clear();
+  //                                     widget.controller?.selectedMulti.clear();
+  //                                     widget.onChangedMulti?.call([]);
 
-                                      // ✅ Reset search text
-                                      _searchCtrl.clear();
-                                      widget.controller?.text = ""; // ✅ update
+  //                                     // ✅ Reset search text
+  //                                     _searchCtrl.clear();
+  //                                     widget.controller?.text = ""; // ✅ update
 
-                                      // ✅ Show all items again
-                                      filtered = List.from(widget.items);
+  //                                     // ✅ Show all items again
+  //                                     filtered = List.from(widget.items);
 
-                                      // ✅ Highlight first item
-                                      highlighted =
-                                          filtered.isNotEmpty ? 0 : -1;
-                                    });
+  //                                     // ✅ Highlight first item
+  //                                     highlighted =
+  //                                         filtered.isNotEmpty ? 0 : -1;
+  //                                   });
 
-                                    // ✅ Rebuild dropdown list
-                                    _overlayEntry?.markNeedsBuild();
+  //                                   // ✅ Rebuild dropdown list
+  //                                   _overlayEntry?.markNeedsBuild();
 
-                                    // ✅ Optional: keep focus in TextField
-                                    //_focusNode.requestFocus();
-                                  },
-                                  child: Text(
-                                    "Clear All",
-                                    style: buttonTextStyle,
-                                  ),
-                                ),
-                                //const SizedBox(width: 5),
-                                ElevatedButton(
-                                  onPressed: selectedMulti.isEmpty
-                                      ? null
-                                      : showSelectedDialog,
-                                  child: Text(
-                                    "View Selected (${selectedMulti.length})",
-                                    style: buttonTextStyle,
-                                  ),
-                                ),
-                                //const Spacer(),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    _focusNode.unfocus();
-                                    _removeOverlay();
-                                  },
-                                  child: Text("Done", style: buttonTextStyle),
-                                ),
-                              ],
-                            ),
+  //                                   // ✅ Optional: keep focus in TextField
+  //                                   //_focusNode.requestFocus();
+  //                                 },
+  //                                 child: Text(
+  //                                   "Clear All",
+  //                                   style: buttonTextStyle,
+  //                                 ),
+  //                               ),
+  //                               //const SizedBox(width: 5),
+  //                               ElevatedButton(
+  //                                 style: ElevatedButton.styleFrom(
+  //   //fixedSize: const Size(100, 100), // Square size: 100x100
+  //   shape: RoundedRectangleBorder(
+  //     borderRadius: BorderRadiusGeometry.all(Radius.circular(5)) // No rounded corners
+  //   ),
+  //   elevation: 8, // Optional: controls shadow depth
+  //  // backgroundColor: Colors.blue, // Optional: button color
+  // ),
+  //                                 onPressed: selectedMulti.isEmpty
+  //                                     ? null
+  //                                     : showSelectedDialog,
+  //                                 child: Text(
+  //                                   "View (${selectedMulti.length})",
+  //                                   style: buttonTextStyle,
+  //                                 ),
+  //                               ),
+  //                               //const Spacer(),
+  //                               ElevatedButton(
+  //                                 style: ElevatedButton.styleFrom(
+  //   //fixedSize: const Size(100, 100), // Square size: 100x100
+  //   shape: RoundedRectangleBorder(
+  //     borderRadius: BorderRadiusGeometry.all(Radius.circular(5)) // No rounded corners
+  //   ),
+  //   elevation: 8, // Optional: controls shadow depth
+  //  // backgroundColor: Colors.blue, // Optional: button color
+  // ),
+  //                                 onPressed: () {
+  //                                   _focusNode.unfocus();
+  //                                   _removeOverlay();
+  //                                 },
+  //                                 child: Text("Done", style: buttonTextStyle),
+  //                               ),
+  //                             ],
+  //                           ),
+
+  Wrap(
+  spacing: 8,          // horizontal space between buttons
+  runSpacing: 8,       // vertical space when wrapped
+  alignment: WrapAlignment.spaceBetween,
+  children: [
+    ElevatedButton(
+  style: ElevatedButton.styleFrom(
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(5)),
+    ),
+    elevation: 8,
+  ),
+  onPressed: () {
+    final areAllVisibleSelected =
+        filtered.isNotEmpty &&
+        filtered.every((item) => selectedMulti.contains(item));
+
+    setState(() {
+      if (areAllVisibleSelected) {
+        // UNCHECK ALL (visible)
+        selectedMulti.removeWhere((e) => filtered.contains(e));
+      } else {
+        // CHECK ALL (visible)
+        selectedMulti.addAll(filtered);
+      }
+
+      // Sync with controller
+      widget.controller?.selectedMulti = selectedMulti.toList();
+      widget.onChangedMulti?.call(selectedMulti.toList());
+
+      // Update text
+      // _searchCtrl.text = 'Selected Item (${selectedMulti.length})';
+      // widget.controller?.text = _searchCtrl.text;
+      _searchCtrl.selection = TextSelection(
+        baseOffset: 0,
+        extentOffset: _searchCtrl.text.length,
+      );
+    });
+
+                    // Delay focus OR selection until dialog fully closes
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  // ✅ Focus the search TextField
+                  _focusNode.requestFocus();
+                
+                  });
+
+    _overlayEntry?.markNeedsBuild();
+  },
+  child: Text(
+    filtered.isNotEmpty &&
+            filtered.every((item) => selectedMulti.contains(item))
+        ? "Uncheck All"
+        : "Check All",
+    style: buttonTextStyle,
+  ),
+),
+
+    // VIEW
+    ElevatedButton(
+       style: ElevatedButton.styleFrom(
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(5)),
+    ),
+    elevation: 8,
+  ),
+      onPressed: selectedMulti.isEmpty ? null : showSelectedDialog,
+      child: Text("View (${selectedMulti.length})", style: buttonTextStyle),
+    ),
+
+    // DONE
+    ElevatedButton(
+       style: ElevatedButton.styleFrom(
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(5)),
+    ),
+    elevation: 8,
+  ),
+      onPressed: () {
+        _focusNode.unfocus();
+        _removeOverlay();
+      },
+      child: Text("Done", style: buttonTextStyle),
+    ),
+  ],
+),
+
+
                           ),
                       ],
                     ),
@@ -503,18 +662,39 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
           //     widget.onSubmittedSingle?.call(selectedSingle);
           //   }
           // },
-          onTap: () {
-            if (widget.multiSelect) {
-              toggleMulti(e);
 
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                //_focusNode.requestFocus();
-              });
-            } else {
-              selectSingle(e);
-              widget.onSubmittedSingle?.call(selectedSingle);
-            }
-          },
+          // onTap: () {
+          //   if (widget.multiSelect) {
+          //     toggleMulti(e);
+
+          //     WidgetsBinding.instance.addPostFrameCallback((_) {
+          //       //_focusNode.requestFocus();
+          //     });
+          //   } else {
+          //     selectSingle(e);
+          //     widget.onSubmittedSingle?.call(selectedSingle);
+          //   }
+          // },
+
+          onTap: () {
+  if (widget.multiSelect) {
+    toggleMulti(e);
+
+    setState(() {
+      highlighted = i; // ⭐ Highlight the clicked item
+    });
+
+    // ⭐ Return keyboard focus to the search box
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _focusNode.requestFocus();
+    });
+
+    _overlayEntry?.markNeedsBuild();
+  } else {
+    selectSingle(e);
+    widget.onSubmittedSingle?.call(selectedSingle);
+  }
+},
 
           child: Container(
               color: isHighlighted
@@ -660,26 +840,63 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
   }
 
   /// ------------------ Selection ------------------
+  // void toggleMulti(MsClass item) {
+  //   setState(() {
+  //     if (selectedMulti.contains(item)) {
+  //       selectedMulti.remove(item);
+  //     } else {
+  //       selectedMulti.add(item);
+  //     }
+  //     widget.controller?.selectedMulti = selectedMulti.toList();
+  //     widget.onChangedMulti?.call(selectedMulti.toList());
+
+  //    // _searchCtrl.text = 'Selected Item (${selectedMulti.length})';
+  //     widget.controller?.text = _searchCtrl.text; // ✅ update
+  //     _searchCtrl.selection = TextSelection(
+  //       baseOffset: 0,
+  //       extentOffset: _searchCtrl.text.length,
+  //     );
+
+  //     _overlayEntry?.markNeedsBuild();
+  //   });
+  // }
+
   void toggleMulti(MsClass item) {
-    setState(() {
-      if (selectedMulti.contains(item)) {
-        selectedMulti.remove(item);
-      } else {
-        selectedMulti.add(item);
-      }
-      widget.controller?.selectedMulti = selectedMulti.toList();
-      widget.onChangedMulti?.call(selectedMulti.toList());
+  setState(() {
+    if (selectedMulti.contains(item)) {
+      selectedMulti.remove(item);
+    } else {
+      selectedMulti.add(item);
+    }
 
-      _searchCtrl.text = 'Selected Item (${selectedMulti.length})';
-      widget.controller?.text = _searchCtrl.text; // ✅ update
-      _searchCtrl.selection = TextSelection(
-        baseOffset: 0,
-        extentOffset: _searchCtrl.text.length,
-      );
+    // Sync controller
+    widget.controller?.selectedMulti = selectedMulti.toList();
+    widget.onChangedMulti?.call(selectedMulti.toList());
 
-      _overlayEntry?.markNeedsBuild();
-    });
-  }
+    // 🔥 If NOTHING is selected → CLEAR text + SHOW ALL ITEMS
+    if (selectedMulti.isEmpty) {
+      _searchCtrl.clear();
+      widget.controller?.text = "";
+
+      // Reset list to ALL items
+      filtered = List.from(widget.items);
+
+      // Reset highlight
+      highlighted = filtered.isNotEmpty ? 0 : -1;
+
+      // 🔥 Keep focus
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _focusNode.requestFocus();
+      });
+    } else {
+      // Keep the existing text, or you can rebuild UI:
+      // _searchCtrl.text = "Selected Item (${selectedMulti.length})";
+    }
+  });
+
+  _overlayEntry?.markNeedsBuild();
+}
+
 
   void selectSingle(MsClass item) {
     setState(() {
@@ -741,11 +958,9 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
                         widget.controller?.selectedMulti =
                             selectedMulti.toList();
                         widget.onChangedMulti?.call(selectedMulti.toList());
-                        // _searchCtrl.text = selectedMulti
-                        //     .map((e) => e.name)
-                        //     .join(', ');
-                        _searchCtrl.text =
-                            'Selected Item (${selectedMulti.length})';
+    
+                        // _searchCtrl.text =
+                        //     'Selected Item (${selectedMulti.length})';
                         _searchCtrl.selection = TextSelection.fromPosition(
                           TextPosition(offset: _searchCtrl.text.length),
                         );
