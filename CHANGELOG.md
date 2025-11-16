@@ -1,3 +1,8 @@
+## [0.0.16] - 2025-11-12
+
+- Initial public release of `ms_single_multi_select_dropdown`
+- UI Update
+
 ## [0.0.15] - 2025-11-12
 
 - Initial public release of `ms_single_multi_select_dropdown`

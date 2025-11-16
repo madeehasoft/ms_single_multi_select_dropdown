@@ -128,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         multyController.requestFocus();
                       },
                       onClearTapped: () {
-                        print("Clear icon tapped!"); // ✅ main page reacts here
+                        log("Clear icon tapped!"); // ✅ main page reacts here
                       },
                     )
                   : Container(),
