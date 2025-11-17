@@ -419,7 +419,7 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
     double getDropdownHeight() {
       const double minHeight = 60;
       const double defaultMaxHeight = 300;
-      const double multiSelectButtonsHeight = 50;
+      const double multiSelectButtonsHeight = 48;
       const double extraPadding = 16;
 
       // Space available below the text field
