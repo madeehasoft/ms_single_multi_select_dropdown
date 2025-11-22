@@ -819,8 +819,7 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
       return KeyEventResult.handled;
     }
 
-    if (data == LogicalKeyboardKey.controlLeft ||
-        data == LogicalKeyboardKey.controlRight) {
+    if (data == LogicalKeyboardKey.controlRight) {
       if (highlighted >= 0 && highlighted < filtered.length) {
         final item = filtered[highlighted];
         if (widget.multiSelect) {

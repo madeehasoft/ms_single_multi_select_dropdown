@@ -1,3 +1,8 @@
+## [0.0.17] - 2025-11-12
+
+- Initial public release of `ms_single_multi_select_dropdown`
+- Up Down Using Keyboard When Press CTRL Then Checked And UnChecked
+
 ## [0.0.16] - 2025-11-12
 
 - Initial public release of `ms_single_multi_select_dropdown`
