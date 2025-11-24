@@ -1,9 +1,9 @@
 name: ms_single_multi_select_dropdown
 description: "A customizable Flutter widget for single and multi-select dropdowns dialog with search, styling, and focus control. Ideal for forms, filters, and dynamic lists."
-version: 0.0.18
+version: 0.0.19
 homepage: https://github.com/madeehasoft/ms_single_multi_select_dropdown.git
 repository: https://github.com/madeehasoft/ms_single_multi_select_dropdown.git
-publisher: madeehasoft.work.gd
+publish_to: https://madeehasoft.work.gd
 
 environment:
   sdk: ">=2.17.0 <4.0.0"

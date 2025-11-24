@@ -1,4 +1,9 @@
-## [0.0.18] - 2025-11-12
+## [0.0.19] - 2025-11-24
+
+- Initial public release of `ms_single_multi_select_dropdown`
+- Publish With A Verified Publisher
+
+## [0.0.18] - 2025-11-24
 
 - Initial public release of `ms_single_multi_select_dropdown`
 - Publish With A Verified Publisher
