@@ -51,6 +51,9 @@ flutter:
      - images/11.png
      - images/11.png
      - images/33.png
+screenshots:
+  - description: "Example screenshot 1"
+    path: images/4.png   
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/to/asset-from-package
