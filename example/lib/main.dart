@@ -111,6 +111,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       dropdownItemSuffixStyle: TextStyle(
                         color: const Color.fromARGB(255, 49, 8, 235),
                       ),
+
+                      searchFieldFocusedBorderColor: Colors.green,
+                      searchFieldFocusedBorderWidth: 2,
+                      searchFieldEnabledBorderColor: Colors.grey,
+                      searchFieldEnabledBorderWidth: 1,
+
                       searchFieldStyle: TextStyle(fontWeight: FontWeight.bold),
 
                       searchFieldHint: "Search Single...",

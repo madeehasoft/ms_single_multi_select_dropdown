@@ -180,6 +180,21 @@ class MsDropSingleMultiSelector extends StatefulWidget {
   /// showSuffixCode.
   final bool showSuffixCode;
 
+  /// Border radius for the input field
+  final double? searchFieldBorderRadius;
+
+  /// Focused border color for the input field
+  final Color? searchFieldFocusedBorderColor;
+
+  /// Focused border width for the input field
+  final double? searchFieldFocusedBorderWidth;
+
+  /// Enabled border color for the input field
+  final Color? searchFieldEnabledBorderColor;
+
+  /// Enabled border width for the input field
+  final double? searchFieldEnabledBorderWidth;
+
   /// Creates a new [MsDropSingleMultiSelector] widget.
   const MsDropSingleMultiSelector({
     super.key,
@@ -209,6 +224,11 @@ class MsDropSingleMultiSelector extends StatefulWidget {
     this.onClearTapped,
     this.showPrefixCode = false,
     this.showSuffixCode = false,
+    this.searchFieldBorderRadius,
+    this.searchFieldFocusedBorderColor,
+    this.searchFieldFocusedBorderWidth,
+    this.searchFieldEnabledBorderColor,
+    this.searchFieldEnabledBorderWidth,
   });
 
   @override
@@ -778,6 +798,10 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
   /// ------------------ Keyboard Support ------------------
   KeyEventResult handleRawKey(KeyEvent event) {
     if (event is! KeyDownEvent) return KeyEventResult.ignored;
+
+    // ✅ IMPORTANT: Only handle keys when dropdown is open
+    if (_overlayEntry == null) return KeyEventResult.ignored;
+
     if (filtered.isEmpty) return KeyEventResult.ignored;
 
     final data = event.logicalKey;
@@ -802,7 +826,9 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
 
     if (data == LogicalKeyboardKey.enter ||
         data == LogicalKeyboardKey.numpadEnter) {
-      if (highlighted >= 0 && highlighted < filtered.length) {
+      if (_overlayEntry != null &&
+          highlighted >= 0 &&
+          highlighted < filtered.length) {
         final item = filtered[highlighted];
         if (widget.multiSelect) {
           //toggleMulti(item);
@@ -1073,7 +1099,31 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
             },
             decoration: InputDecoration(
               hintText: searchFieldHint,
-              border: const OutlineInputBorder(),
+              //border: const OutlineInputBorder(),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(
+                  widget.searchFieldBorderRadius ?? 4.0,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(
+                  widget.searchFieldBorderRadius ?? 4.0,
+                ),
+                borderSide: BorderSide(
+                  color: widget.searchFieldEnabledBorderColor ??
+                      Colors.grey.shade400,
+                  width: widget.searchFieldEnabledBorderWidth ?? 1.0,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(
+                  widget.searchFieldBorderRadius ?? 4.0,
+                ),
+                borderSide: BorderSide(
+                  color: widget.searchFieldFocusedBorderColor ?? Colors.blue,
+                  width: widget.searchFieldFocusedBorderWidth ?? 2.0,
+                ),
+              ),
               filled: true, // ✅ important
               fillColor: widget.searchFieldBackgroundColor ??
                   Colors.white, // use parent color or default

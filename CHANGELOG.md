@@ -1,3 +1,12 @@
+## [0.0.21] - 2026-04-29
+
+- Initial public release of `ms_single_multi_select_dropdown`
+- Update UI
+- searchFieldFocusedBorderColor: Colors.green,
+- searchFieldFocusedBorderWidth: 2,
+- searchFieldEnabledBorderColor: Colors.grey,
+- searchFieldEnabledBorderWidth: 1,
+
 ## [0.0.20] - 2025-11-24
 
 - Initial public release of `ms_single_multi_select_dropdown`
