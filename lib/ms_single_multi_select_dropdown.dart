@@ -63,6 +63,11 @@ class MsDropController {
     //text = 'Selected Item (${items.length})';
     notifyClear?.call(); // 🔔 triggers _onControllerClear
   }
+
+  // Add this method to MsDropController class
+  void refreshUI() {
+    notifyClear?.call();
+  }
 }
 
 /// ------------------ MODEL ------------------
@@ -313,35 +318,53 @@ class _MsDropSingleMultiSelectorState extends State<MsDropSingleMultiSelector> {
   }
 
   // ------------------ HELPER METHOD ------------------
-  // void _onControllerClear() {
-  //   setState(() {
-  //     selectedSingle = null;
-  //     selectedMulti.clear();
-  //     _searchCtrl.clear();
-  //     applyFilter("");
-  //     highlighted = filtered.isNotEmpty ? 0 : -1;
-  //   });
-
-  //   _overlayEntry?.markNeedsBuild();
-  // }
 
   void _onControllerClear() {
     setState(() {
-      // 🟢 Sync local widget state with controller state
+      // Sync local widget state with controller state
       selectedSingle = widget.controller?.selectedSingle;
       selectedMulti = widget.controller?.selectedMulti.toSet() ?? {};
 
-      // 🟢 Update search text from controller
-      _searchCtrl.text = widget.controller?.text ?? "";
+      // Update search text
+      if (widget.multiSelect) {
+        if (selectedMulti.isNotEmpty) {
+          _searchCtrl.text = 'Selected Item (${selectedMulti.length})';
+        } else {
+          _searchCtrl.text = "";
+        }
+      } else {
+        _searchCtrl.text = selectedSingle?.name ?? "";
+      }
 
-      // 🟢 Apply filter based on current text
-      applyFilter(widget.controller?.text ?? "");
+      // Reset filtered items to show all
+      filtered = List.from(widget.items);
       highlighted = filtered.isNotEmpty ? 0 : -1;
     });
 
-    // 🟢 Rebuild dropdown overlay if visible
-    _overlayEntry?.markNeedsBuild();
+    // 🔥 Force rebuild overlay if it exists
+    if (_overlayEntry != null) {
+      _overlayEntry!.markNeedsBuild();
+    }
   }
+
+//disable - 5-2-2026
+  // void _onControllerClear() {
+  //   setState(() {
+  //     // 🟢 Sync local widget state with controller state
+  //     selectedSingle = widget.controller?.selectedSingle;
+  //     selectedMulti = widget.controller?.selectedMulti.toSet() ?? {};
+
+  //     // 🟢 Update search text from controller
+  //     _searchCtrl.text = widget.controller?.text ?? "";
+
+  //     // 🟢 Apply filter based on current text
+  //     applyFilter(widget.controller?.text ?? "");
+  //     highlighted = filtered.isNotEmpty ? 0 : -1;
+  //   });
+
+  //   // 🟢 Rebuild dropdown overlay if visible
+  //   _overlayEntry?.markNeedsBuild();
+  // }
 
   @override
   void dispose() {

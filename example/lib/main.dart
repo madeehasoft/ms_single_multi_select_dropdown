@@ -228,10 +228,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     MsClass(
                       prefixCode: "Prefix Code 003",
-                      name: "Bangladesh",
+                      name: "Bangladesh India Pakistan Japan America",
                       suffixCode: "Suffix Code 003",
                     ),
                   ]);
+
+                  multyController.refreshUI();
                 },
                 child: const Text("Manual Select"),
               ),
